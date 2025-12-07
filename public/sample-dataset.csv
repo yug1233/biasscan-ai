@@ -1,0 +1,21 @@
+name,gender,age,race,department,salary,years_experience
+John Smith,male,35,white,Engineering,95000,8
+Jane Doe,female,28,white,Engineering,75000,4
+Bob Johnson,male,42,white,Engineering,110000,15
+Alice Williams,female,31,white,Marketing,68000,6
+Charlie Brown,male,38,white,Engineering,98000,10
+Diana Prince,female,29,asian,Engineering,78000,5
+Eve Davis,female,33,white,Marketing,72000,7
+Frank Miller,male,45,white,Engineering,115000,18
+Grace Lee,female,27,asian,Engineering,70000,3
+Henry Wilson,male,40,white,Engineering,105000,12
+Ivan Rodriguez,male,36,hispanic,Engineering,92000,9
+Julia Chen,female,30,asian,Marketing,69000,5
+Kevin O'Brien,male,44,white,Engineering,108000,16
+Laura Martinez,female,32,hispanic,Marketing,71000,6
+Michael Kim,male,29,asian,Engineering,80000,5
+Nancy Taylor,female,34,white,Marketing,73000,8
+Oscar Patel,male,37,asian,Engineering,96000,10
+Patricia Brown,female,26,white,Engineering,68000,2
+Quinn Anderson,male,41,white,Engineering,107000,14
+Rachel Green,female,28,white,Marketing,67000,4
