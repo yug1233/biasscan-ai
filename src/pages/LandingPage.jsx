@@ -19,7 +19,8 @@ export default function LandingPage() {
   }, [])
 
   const handleSignOut = async () => {
-    await signOut()
+    await supabase.auth.signOut()
+
     setUser(null)
     navigate('/')
   }
