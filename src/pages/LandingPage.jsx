@@ -17,7 +17,14 @@ export default function LandingPage() {
       setUser(user)
     })
   }, [])
-
+export default function LandingPage() {
+  try {
+    // your component code here
+  } catch (err) {
+    console.error("LandingPage render error:", err)
+    return <div>Error loading page</div>
+  }
+}
   const navigate = useNavigate()
   }
 
