@@ -20,9 +20,22 @@ export default function Dashboard({ user }) {
   const navigate = useNavigate()
   const { toast } = useToast()
 
-  useEffect(() => {
-    loadData()
-  }, [user])
+  const loadData = async () => {
+  if (!user) return; // early return if user is undefined
+  try {
+    const [scansResult, reviewsResult] = await Promise.all([
+      getUserScans(user.id),
+      getReviews(10)
+    ])
+
+    if (scansResult.data) setScans(scansResult.data)
+    if (reviewsResult.data) setReviews(reviewsResult.data)
+  } catch (error) {
+    console.error('Error loading data:', error)
+  } finally {
+    setLoading(false)
+  }
+}
 
   const loadData = async () => {
     try {
