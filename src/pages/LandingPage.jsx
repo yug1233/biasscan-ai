@@ -3,25 +3,22 @@ import { Shield, Zap, Lock, Download, Star, CheckCircle, ArrowRight, Share2 } fr
 import { Button } from '../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import Navbar from '../components/Navbar'
-await supabase.auth.signOut()
+useEffect(() => {
+  supabase.auth.signOut()
+}, [])
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 
 export default function LandingPage() {
   const [user, setUser] = useState(null)
-})
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user)
     })
   }, [])
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-
-    setUser(null)
-    navigate('/')
+  const navigate = useNavigate()
   }
 
   const features = [
