@@ -103,8 +103,7 @@ export default function UploadPage({ user }) {
 
       // Navigate to results page
       setTimeout(() => {
-        navigate(`/results/${data[0].id}`, { state: { biasMetrics, fileName: file.name } })
-      }, 1000)
+        navigate(`/results/${data.id}`, { state: { biasMetrics, fileName: file.name } })
 
     } catch (error) {
       console.error('Processing error:', error)
