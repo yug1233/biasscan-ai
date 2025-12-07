@@ -3,7 +3,7 @@ import { Shield, Zap, Lock, Download, Star, CheckCircle, ArrowRight, Share2 } fr
 import { Button } from '../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import Navbar from '../components/Navbar'
-import { signOut } from '../lib/supabase'
+await supabase.auth.signOut()
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
