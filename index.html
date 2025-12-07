@@ -4,38 +4,112 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BiasScan AI - No-Code Bias Detection</title>
+    <meta name="description" content="Upload CSV/images and get bias-free data instantly. Privacy-first, client-side processing, GDPR compliant." />
     
-    <!-- SEO Meta Tags -->
-    <title>BiasScan AI - No-Code Bias Detection for AI Datasets</title>
-    <meta name="description" content="Upload CSV/images and get bias-free data instantly. Privacy-first, client-side processing, GDPR compliant. Detect gender, race, and age bias in your AI datasets." />
-    <meta name="keywords" content="AI bias detection, dataset bias, fair AI, machine learning bias, GDPR compliant, privacy-first" />
-    <meta name="author" content="BiasScan AI" />
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://biasscan.ai/" />
-    <meta property="og:title" content="BiasScan AI - No-Code Bias Detection for AI Datasets" />
-    <meta property="og:description" content="Upload CSV/images and get bias-free data instantly. Privacy-first, client-side processing." />
-    <meta property="og:image" content="https://biasscan.ai/og-image.png" />
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://biasscan.ai/" />
-    <meta property="twitter:title" content="BiasScan AI - No-Code Bias Detection for AI Datasets" />
-    <meta property="twitter:description" content="Upload CSV/images and get bias-free data instantly. Privacy-first, client-side processing." />
-    <meta property="twitter:image" content="https://biasscan.ai/twitter-image.png" />
-    
-    <!-- PWA -->
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#3b82f6" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    
-    <!-- Preconnect -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Tailwind CDN for quick styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+  <body class="bg-gray-50 text-gray-800">
+    <!-- Navbar -->
+    <header class="bg-white shadow">
+      <div class="container mx-auto flex justify-between items-center px-4 py-4">
+        <h1 class="text-2xl font-bold text-blue-600">BiasScan AI</h1>
+        <nav>
+          <a href="#features" class="px-3 hover:text-blue-600">Features</a>
+          <a href="#pricing" class="px-3 hover:text-blue-600">Pricing</a>
+          <a href="#contact" class="px-3 hover:text-blue-600">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="text-center py-32 bg-gradient-to-br from-blue-100 to-purple-100">
+      <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
+        Upload CSV/Images → Get Bias-Free Data Instantly
+      </h2>
+      <p class="text-xl mb-8 max-w-2xl mx-auto">
+        No-code bias detection for AI datasets. Privacy-first, client-side processing.
+      </p>
+      <div class="flex justify-center gap-4">
+        <a href="/auth">
+          <button class="px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Start Free Scan</button>
+        </a>
+        <button class="px-8 py-4 border border-blue-600 rounded-lg hover:bg-blue-100">Watch Demo</button>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gray-100">
+      <div class="container mx-auto px-4 text-center">
+        <h3 class="text-3xl font-bold mb-10">Why Choose BiasScan AI?</h3>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div class="p-6 bg-white rounded-lg shadow hover:shadow-lg transition">
+            <div class="text-blue-600 mb-4 text-4xl">⚡</div>
+            <h4 class="font-semibold mb-2">Instant Analysis</h4>
+            <p>Upload CSV/images and get bias detection results in seconds.</p>
+          </div>
+          <div class="p-6 bg-white rounded-lg shadow hover:shadow-lg transition">
+            <div class="text-blue-600 mb-4 text-4xl">🔒</div>
+            <h4 class="font-semibold mb-2">Privacy First</h4>
+            <p>Your data never leaves your browser. GDPR compliant.</p>
+          </div>
+          <div class="p-6 bg-white rounded-lg shadow hover:shadow-lg transition">
+            <div class="text-blue-600 mb-4 text-4xl">🛡️</div>
+            <h4 class="font-semibold mb-2">Certified Fair AI</h4>
+            <p>Industry-standard bias detection for gender, race, and age.</p>
+          </div>
+          <div class="p-6 bg-white rounded-lg shadow hover:shadow-lg transition">
+            <div class="text-blue-600 mb-4 text-4xl">📥</div>
+            <h4 class="font-semibold mb-2">Export Everything</h4>
+            <p>Download PDF reports, cleaned datasets, and charts instantly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20">
+      <div class="container mx-auto px-4 text-center">
+        <h3 class="text-3xl font-bold mb-10">Simple, Transparent Pricing</h3>
+        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div class="p-6 bg-white rounded-lg shadow">
+            <h4 class="text-2xl font-bold mb-2">Free Tier</h4>
+            <p class="mb-4">Perfect for trying out BiasScan AI</p>
+            <span class="text-4xl font-bold">$0</span>/month
+            <ul class="mt-4 text-left">
+              <li>10 scans per month</li>
+              <li>Up to 100MB file size</li>
+              <li>PDF reports</li>
+            </ul>
+            <a href="/auth">
+              <button class="mt-6 w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Get Started Free</button>
+            </a>
+          </div>
+          <div class="p-6 bg-white rounded-lg shadow border-2 border-blue-600 relative">
+            <div class="absolute top-0 right-0 bg-blue-600 text-white px-4 py-1 text-sm font-medium">Popular</div>
+            <h4 class="text-2xl font-bold mb-2">Pro Plan</h4>
+            <p class="mb-4">For teams and professionals</p>
+            <span class="text-4xl font-bold">$5</span>/month
+            <ul class="mt-4 text-left">
+              <li>Unlimited scans</li>
+              <li>Up to 100MB file size</li>
+              <li>Advanced analytics</li>
+              <li>Priority support</li>
+            </ul>
+            <a href="/auth">
+              <button class="mt-6 w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Upgrade to Pro</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-200 py-12">
+      <div class="container mx-auto px-4 text-center">
+        <p>© 2024 BiasScan AI. All rights reserved. Built for fair AI.</p>
+      </div>
+    </footer>
   </body>
-</html>
+  </html>
