@@ -5,7 +5,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import Navbar from '../components/Navbar'
 import { signOut } from '../lib/supabase'
 import { generateBiasReport } from '../lib/pdfGenerator'
-import { exportToCSV } from '../lib/biasDetection'
+const handleDownloadDataset = () => {
+  exportToCSV(biasMetrics)
+  toast({
+    title: 'Dataset Downloaded',
+    description: 'Your cleaned dataset has been downloaded.',
+  })
+}
 import { useToast } from '../components/ui/use-toast'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement } from 'chart.js'
 import { Pie, Bar } from 'react-chartjs-2'
@@ -18,8 +24,8 @@ export default function ResultsPage({ user }) {
   const { scanId } = useParams()
   const { toast } = useToast()
   
-  const { biasMetrics, fileName } = location.state || {}
-
+  const biasMetrics = location?.state?.biasMetrics || null
+const fileName = location?.state?.fileName || "Unknown File"
   const handleSignOut = async () => {
     await signOut()
     navigate('/')
