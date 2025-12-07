@@ -9,8 +9,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 
 export default function LandingPage() {
-  supabase.auth.getUser().then(({ data: { user } }) => {
-  setUser(user)
+  const [user, setUser] = useState(null)
 })
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
