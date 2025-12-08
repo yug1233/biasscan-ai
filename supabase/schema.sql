@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS public.users (
   email TEXT UNIQUE NOT NULL,
   subscription_plan TEXT DEFAULT 'free',
   scan_count INTEGER DEFAULT 0,
+  is_admin BOOLEAN DEFAULT false,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -40,16 +41,34 @@ CREATE INDEX IF NOT EXISTS idx_scans_created_at ON public.scans(created_at DESC)
 CREATE INDEX IF NOT EXISTS idx_reviews_user_id ON public.reviews(user_id);
 CREATE INDEX IF NOT EXISTS idx_reviews_status ON public.reviews(status);
 CREATE INDEX IF NOT EXISTS idx_reviews_created_at ON public.reviews(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_users_is_admin ON public.users(is_admin);
 
 -- Enable Row Level Security
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.scans ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.reviews ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Users can view own profile" ON public.users;
+DROP POLICY IF EXISTS "Users can update own profile" ON public.users;
+DROP POLICY IF EXISTS "Users can insert own profile" ON public.users;
+DROP POLICY IF EXISTS "Users can view own scans" ON public.scans;
+DROP POLICY IF EXISTS "Users can create own scans" ON public.scans;
+DROP POLICY IF EXISTS "Users can delete own scans" ON public.scans;
+DROP POLICY IF EXISTS "Users can view approved reviews" ON public.reviews;
+DROP POLICY IF EXISTS "Admins can view all reviews" ON public.reviews;
+DROP POLICY IF EXISTS "Users can create own reviews" ON public.reviews;
+DROP POLICY IF EXISTS "Users can update own reviews" ON public.reviews;
+DROP POLICY IF EXISTS "Admins can update all reviews" ON public.reviews;
+
 -- Users policies
 CREATE POLICY "Users can view own profile"
   ON public.users FOR SELECT
   USING (auth.uid() = id);
+
+CREATE POLICY "Users can insert own profile"
+  ON public.users FOR INSERT
+  WITH CHECK (auth.uid() = id);
 
 CREATE POLICY "Users can update own profile"
   ON public.users FOR UPDATE
@@ -68,35 +87,29 @@ CREATE POLICY "Users can delete own scans"
   ON public.scans FOR DELETE
   USING (auth.uid() = user_id);
 
--- Reviews policies
-CREATE POLICY "Users can view approved reviews"
+-- Reviews policies - Regular users
+CREATE POLICY "Users can view approved reviews or own reviews"
   ON public.reviews FOR SELECT
-  USING (status = 'approved' OR auth.uid() = user_id);
+  USING (
+    status = 'approved' 
+    OR auth.uid() = user_id
+    OR EXISTS (
+      SELECT 1 FROM public.users
+      WHERE id = auth.uid() AND is_admin = true
+    )
+  );
 
 CREATE POLICY "Users can create own reviews"
   ON public.reviews FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
-CREATE POLICY "Users can update own reviews"
-  ON public.reviews FOR UPDATE
-  USING (auth.uid() = user_id);
-
--- Admin policies (you'll need to set up admin role)
-CREATE POLICY "Admins can view all reviews"
-  ON public.reviews FOR SELECT
-  USING (
-    EXISTS (
-      SELECT 1 FROM public.users
-      WHERE id = auth.uid() AND email LIKE '%@admin.biasscan.ai'
-    )
-  );
-
-CREATE POLICY "Admins can update all reviews"
+CREATE POLICY "Users can update own reviews or admins can update any"
   ON public.reviews FOR UPDATE
   USING (
-    EXISTS (
+    auth.uid() = user_id
+    OR EXISTS (
       SELECT 1 FROM public.users
-      WHERE id = auth.uid() AND email LIKE '%@admin.biasscan.ai'
+      WHERE id = auth.uid() AND is_admin = true
     )
   );
 
@@ -104,13 +117,25 @@ CREATE POLICY "Admins can update all reviews"
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.users (id, email)
-  VALUES (NEW.id, NEW.email);
+  INSERT INTO public.users (id, email, is_admin)
+  VALUES (
+    NEW.id, 
+    NEW.email,
+    CASE 
+      WHEN NEW.email LIKE '%@admin.biasscan.ai' THEN true
+      ELSE false
+    END
+  );
   RETURN NEW;
+EXCEPTION
+  WHEN unique_violation THEN
+    RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- Trigger to create user profile on signup
+-- Drop trigger if exists and recreate
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
@@ -124,7 +149,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Triggers for updated_at
+-- Drop triggers if exist and recreate
+DROP TRIGGER IF EXISTS update_users_updated_at ON public.users;
+DROP TRIGGER IF EXISTS update_reviews_updated_at ON public.reviews;
+
 CREATE TRIGGER update_users_updated_at
   BEFORE UPDATE ON public.users
   FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
